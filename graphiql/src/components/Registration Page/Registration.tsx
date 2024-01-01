@@ -8,6 +8,7 @@ import Footer from "../Footer/Footer";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ENschema, RUschema } from "../Validation/Shema";
+import "./Registration.css"
 
 function RegistrationPage() {
   const [email, setEmail] = useState("");

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Header from "../Header/Header";
 import { useLocalizationContext } from "../context/context";
 import Footer from "../Footer/Footer";
+import "./Welcome.css"
 
 function WelcomePage() {
   const [user] = useAuthState(auth);
@@ -13,6 +14,7 @@ function WelcomePage() {
   return (
     <div>
       <Header />
+      <div className="Welcome__container">
       {Localization === "en" ? (
         <h1>Welcome Page</h1>
       ) : (
@@ -52,6 +54,7 @@ function WelcomePage() {
           )}
         </div>
       )}
+      </div>
       <Footer />
     </div>
   );

@@ -8,6 +8,7 @@ import Footer from "../Footer/Footer";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ENschemaLogin, RUschemaLogin } from "../Validation/Shema";
+import "./Login.css"
 
 function LoginPage() {
   const [email, setEmail] = useState("");

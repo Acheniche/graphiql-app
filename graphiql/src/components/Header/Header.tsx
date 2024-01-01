@@ -2,11 +2,13 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, logout } from "../Login Page/firebase";
 import { useNavigate } from "react-router-dom";
 import { useLocalizationContext } from "../context/context";
+import "./Header.css"
+import { useEffect, useState } from "react";
 
 function Header() {
   const [user] = useAuthState(auth);
   const navigate = useNavigate();
-
+  const [isSticky, setSticky] = useState(false);
   const { Localization, setLocalization } = useLocalizationContext();
 
   function setLanguage() {
@@ -17,8 +19,20 @@ function Header() {
     }
   }
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setSticky(window.scrollY > 0);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
-    <header>
+    <header className={`App ${isSticky ? 'sticky' : ''}`}>
       {Localization === "en" ? (
         <div>
           <button onClick={() => navigate("/")}>Go to Welcome page</button>
