@@ -1,10 +1,12 @@
+import { useAuthState } from "react-firebase-hooks/auth";
 import { Navigate, Outlet } from "react-router-dom";
+import { auth } from "../Login Page/firebase";
 
 
 const PrivateRoute = () => {
-    const auth = false;
+    const [user, loading, error] = useAuthState(auth);
     return (
-        auth ? <Outlet /> : <Navigate to="/Login" />
+        user ? <Outlet /> : <Navigate to="/Login" />
     );
 };
 

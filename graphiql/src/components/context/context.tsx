@@ -5,7 +5,7 @@ export type LocalizationContext = {
     setLocalization: Dispatch<SetStateAction<string | undefined>>;
   }
 
-export const LocalizationContext = createContext<LocalizationContext | undefined | string>('en');
+export const LocalizationContext = createContext<LocalizationContext | undefined>(undefined);
 
 export function useLocalizationContext() {
     const context = useContext(LocalizationContext);
