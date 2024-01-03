@@ -1,9 +1,8 @@
 import React, { SetStateAction, useState } from "react";
 import { GraphQLClient } from "graphql-request";
-import { parse, print } from "graphql";
-import JSONPretty from "react-json-pretty";
 import { useLocalizationContext } from "../context/context";
 import "./GraphQL.css";
+import ResponseJSON from "./prettifyer";
 
 const defaultEndpoint = "https://rickandmortyapi.com/graphql";
 
@@ -56,13 +55,27 @@ const GraphQL: React.FC = () => {
     }
   };
 
-  const prettifyQuery = () => {
+  interface ParsedQuery {
+    formatted: string;
+    error?: string;
+  }
+
+  const parseQuery = (query: string): ParsedQuery => {
     try {
-      const parsedQuery = parse(query, { noLocation: true });
-      const prettifiedQuery = print(parsedQuery);
-      setQuery(prettifiedQuery);
+      const lines = query.split("\n").map((line) => line.trim());
+      const formatted = lines.join(" ").replace(/\s+/g, " ");
+      return { formatted };
     } catch (error) {
-      console.error("Error parsing or formatting GraphQL query:", error);
+      return { formatted: query, error: "Error parsing query" };
+    }
+  };
+
+  const prettifyQuery = () => {
+    const { formatted, error } = parseQuery(query);
+    if (error) {
+      console.error(error);
+    } else {
+      setQuery(formatted);
     }
   };
 
@@ -135,7 +148,7 @@ const GraphQL: React.FC = () => {
       </form>
       <div className="response">
         {Localization === "en" ? <label>Response</label> : <label>Ответ</label>}
-        <JSONPretty data={response} />
+        <ResponseJSON data={response} />
       </div>
     </div>
   );
