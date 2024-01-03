@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Header from "../Header/Header";
 import { useLocalizationContext } from "../context/context";
 import Footer from "../Footer/Footer";
-import "./Welcome.css"
+import "./Welcome.css";
 
 function WelcomePage() {
   const [user] = useAuthState(auth);
@@ -15,45 +15,49 @@ function WelcomePage() {
     <div>
       <Header />
       <div className="Welcome__container">
-      {Localization === "en" ? (
-        <h1>Welcome Page</h1>
-      ) : (
-        <h1>Страница приветствия</h1>
-      )}
-      {user ? (
-        <div>
-          {Localization === "en" ? <h1>Authorized</h1> : <h1>Авторизирован</h1>}
-          {Localization === "en" ? (
-            <button onClick={() => navigate("/Main")}>Go to main</button>
-          ) : (
-            <button onClick={() => navigate("/Main")}>
-              Перейти на главную
-            </button>
-          )}
-        </div>
-      ) : (
-        <div>
-          {Localization === "en" ? (
-            <h1> Not Authorized</h1>
-          ) : (
-            <h1>Не Авторизирован</h1>
-          )}
-          {Localization === "en" ? (
-            <button onClick={() => navigate("/Login")}>Login</button>
-          ) : (
-            <button onClick={() => navigate("/Login")}>Войти</button>
-          )}
-          {Localization === "en" ? (
-            <button onClick={() => navigate("/Registration")}>
-              Registration
-            </button>
-          ) : (
-            <button onClick={() => navigate("/Registration")}>
-              Зарегистрироваться
-            </button>
-          )}
-        </div>
-      )}
+        {Localization === "en" ? (
+          <h1>Welcome Page</h1>
+        ) : (
+          <h1>Страница приветствия</h1>
+        )}
+        {user ? (
+          <div>
+            {Localization === "en" ? (
+              <h1>Authorized</h1>
+            ) : (
+              <h1>Авторизирован</h1>
+            )}
+            {Localization === "en" ? (
+              <button onClick={() => navigate("/Main")}>Go to main</button>
+            ) : (
+              <button onClick={() => navigate("/Main")}>
+                Перейти на главную
+              </button>
+            )}
+          </div>
+        ) : (
+          <div>
+            {Localization === "en" ? (
+              <h1> Not Authorized</h1>
+            ) : (
+              <h1>Не Авторизирован</h1>
+            )}
+            {Localization === "en" ? (
+              <button onClick={() => navigate("/Login")}>Login</button>
+            ) : (
+              <button onClick={() => navigate("/Login")}>Войти</button>
+            )}
+            {Localization === "en" ? (
+              <button onClick={() => navigate("/Registration")}>
+                Registration
+              </button>
+            ) : (
+              <button onClick={() => navigate("/Registration")}>
+                Зарегистрироваться
+              </button>
+            )}
+          </div>
+        )}
       </div>
       <Footer />
     </div>

@@ -7,10 +7,6 @@ import PrivateRoute from "./components/router/privateRoute";
 import MainPage from "./components/Main Page/Main";
 import RegistrationPage from "./components/Registration Page/Registration";
 
-export function sum(a: number, b: number) {
-  return a + b;
-}
-
 function App() {
   const [Localization, setLocalization] = useState<string | undefined>("en");
 
