@@ -1,5 +1,6 @@
 import React, { SetStateAction, useState } from "react";
 import { GraphQLClient } from "graphql-request";
+import { parse, print } from "graphql";
 import JSONPretty from "react-json-pretty";
 import { useLocalizationContext } from "../context/context";
 import "./GraphQL.css";
@@ -55,6 +56,16 @@ const GraphQL: React.FC = () => {
     }
   };
 
+  const prettifyQuery = () => {
+    try {
+      const parsedQuery = parse(query, { noLocation: true });
+      const prettifiedQuery = print(parsedQuery);
+      setQuery(prettifiedQuery);
+    } catch (error) {
+      console.error("Error parsing or formatting GraphQL query:", error);
+    }
+  };
+
   return (
     <div className="GraphQL">
       <form onSubmit={handleSubmit}>
@@ -81,8 +92,14 @@ const GraphQL: React.FC = () => {
             id="query"
             rows={10}
             cols={50}
+            value={query}
             onChange={handleQueryChange}
           />
+          {Localization === "en" ? (
+            <button onClick={prettifyQuery}>Format Query</button>
+          ) : (
+            <button onClick={prettifyQuery}>Форматировать запрос</button>
+          )}
         </div>
         <div className="control">
           {Localization === "en" ? (
