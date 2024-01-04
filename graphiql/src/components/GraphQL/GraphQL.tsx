@@ -16,20 +16,20 @@ const GraphQL: React.FC = () => {
   const { Localization } = useLocalizationContext();
 
   const [isDocumentationVisible, setDocumentationVisible] = useState(false);
-  // const [isHeadersVisible, setHeadersVisible] = useState(true);
-  // const [isVariablesVisible, setVariablesVisible] = useState(true);
+  const [isHeadersVisible, setHeadersVisible] = useState(true);
+  const [isVariablesVisible, setVariablesVisible] = useState(true);
 
   const toggleDocumentationVisibility = () => {
     setDocumentationVisible(!isDocumentationVisible);
   };
 
-  // const toggleHeadersVisibility = () => {
-  //   setHeadersVisible(!isHeadersVisible);
-  // };
+  const toggleHeadersVisibility = () => {
+    setHeadersVisible(!isHeadersVisible);
+  };
 
-  // const toggleVariablesVisibility = () => {
-  //   setVariablesVisible(!isVariablesVisible);
-  // };
+  const toggleVariablesVisibility = () => {
+    setVariablesVisible(!isVariablesVisible);
+  };
 
   const handleEndpointChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEndpoint(event.target.value);
@@ -72,7 +72,6 @@ const GraphQL: React.FC = () => {
     }
   };
 
-
   const prettifyQuery = () => {
     try {
       const parsedQuery = parse(query, { noLocation: true });
@@ -86,12 +85,17 @@ const GraphQL: React.FC = () => {
   return (
     <div className="GraphQL">
       <div className="documentation">
-      {Localization === "en" ? (
-            <button onClick={toggleDocumentationVisibility}> Documentation</button>
-          ) : (
-            <button onClick={toggleDocumentationVisibility}> Документация</button>
-          )}
-        {isDocumentationVisible && <DocumentationExplorer sdlEndpoint={endpoint} />}
+        {Localization === "en" ? (
+          <button onClick={toggleDocumentationVisibility}>
+            {" "}
+            Documentation
+          </button>
+        ) : (
+          <button onClick={toggleDocumentationVisibility}> Документация</button>
+        )}
+        {isDocumentationVisible && (
+          <DocumentationExplorer sdlEndpoint={endpoint} />
+        )}
       </div>
       <form className="form-container" onSubmit={handleSubmit}>
         <div className="control">
@@ -121,9 +125,9 @@ const GraphQL: React.FC = () => {
             onChange={handleQueryChange}
           />
           {Localization === "en" ? (
-            <button onClick={prettifyQuery}>Format Query</button>
+            <button type="button" onClick={prettifyQuery}>Format Query</button>
           ) : (
-            <button onClick={prettifyQuery}>Форматировать запрос</button>
+            <button type="button" onClick={prettifyQuery}>Форматировать запрос</button>
           )}
         </div>
         <div className="control">
@@ -132,17 +136,19 @@ const GraphQL: React.FC = () => {
           ) : (
             <label htmlFor="variables">Переменные</label>
           )}
-          {/* {Localization === "en" ? (
-            <button onClick={toggleVariablesVisibility}>Variables</button>
+          {Localization === "en" ? (
+            <button type="button" onClick={toggleVariablesVisibility}>Variables</button>
           ) : (
-            <button onClick={toggleVariablesVisibility}>Переменные</button>
-          )}   */}
+            <button type="button" onClick={toggleVariablesVisibility}>Переменные</button>
+          )} 
+{isVariablesVisible &&
           <textarea
             id="variables"
             rows={5}
             cols={50}
             onChange={handleVariablesChange}
           />
+}
         </div>
         <div className="control">
           {Localization === "en" ? (
@@ -150,17 +156,19 @@ const GraphQL: React.FC = () => {
           ) : (
             <label htmlFor="headers">Заголовки</label>
           )}
-          {/* {Localization === "en" ? (
-            <button onClick={toggleHeadersVisibility}>Headers</button>
+          {Localization === "en" ? (
+            <button type="button" onClick={toggleHeadersVisibility}>Headers</button>
           ) : (
-            <button onClick={toggleHeadersVisibility}>Заголовки</button>
-          )} */}
+            <button type="button" onClick={toggleHeadersVisibility}>Заголовки</button>
+          )}
+          {isHeadersVisible && 
           <textarea
             id="headers"
             rows={5}
             cols={50}
             onChange={handleHeadersChange}
           />
+        }
         </div>
         {Localization === "en" ? (
           <button type="submit">Send</button>
@@ -170,11 +178,7 @@ const GraphQL: React.FC = () => {
       </form>
       <div className="response">
         {Localization === "en" ? <label>Response</label> : <label>Ответ</label>}
-        {response && 
-        <pre>
-        {JSON.stringify(response, null, 2)}
-        </pre>
-        }
+        {response && <pre>{JSON.stringify(response, null, 2)}</pre>}
       </div>
     </div>
   );

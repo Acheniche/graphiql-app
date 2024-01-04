@@ -1,23 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
+import { useLocalizationContext } from "../context/context";
 
 interface DocumentationExplorerProps {
   sdlEndpoint: string;
 }
 
-const DocumentationExplorer: React.FC<DocumentationExplorerProps> = ({ sdlEndpoint }) => {
+const DocumentationExplorer: React.FC<DocumentationExplorerProps> = ({
+  sdlEndpoint,
+}) => {
   const [documentation, setDocumentation] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const { Localization } = useLocalizationContext();
 
   useEffect(() => {
     const fetchDocumentation = async () => {
       try {
         const response = await fetch(sdlEndpoint, {
-          method: 'POST',
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify({  query: `
+          body: JSON.stringify({
+            query: `
           query IntrospectionQuery {
             __schema {
               types {
@@ -35,7 +40,8 @@ const DocumentationExplorer: React.FC<DocumentationExplorerProps> = ({ sdlEndpoi
               }
             }
           }
-        `, }),
+        `,
+          }),
         });
 
         if (!response.ok) {
@@ -47,7 +53,7 @@ const DocumentationExplorer: React.FC<DocumentationExplorerProps> = ({ sdlEndpoi
         setLoading(false);
       } catch (error) {
         if (error instanceof Error) {
-        setError(`Error fetching documentation: ${error.message}`);
+          setError(`Error fetching documentation: ${error.message}`);
         }
         setLoading(false);
       }
@@ -70,8 +76,8 @@ const DocumentationExplorer: React.FC<DocumentationExplorerProps> = ({ sdlEndpoi
 
   return (
     <div>
-      <h2>Operational Documentation Explorer</h2>
-      <pre className='DocumentationJSON'>{documentation}</pre>
+      {Localization === "en" ? <h2>Documentation</h2> : <h2>Документация</h2>}
+      <pre className="DocumentationJSON">{documentation}</pre>
     </div>
   );
 };
