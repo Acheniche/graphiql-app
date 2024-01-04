@@ -2,7 +2,8 @@ import React, { SetStateAction, useState } from "react";
 import { GraphQLClient } from "graphql-request";
 import { useLocalizationContext } from "../context/context";
 import "./GraphQL.css";
-import ResponseJSON from "./prettifyer";
+import DocumentationExplorer from "./documentation";
+import { parse, print } from "graphql";
 
 const defaultEndpoint = "https://rickandmortyapi.com/graphql";
 
@@ -13,6 +14,22 @@ const GraphQL: React.FC = () => {
   const [headers, setHeaders] = useState({});
   const [response, setResponse] = useState(null);
   const { Localization } = useLocalizationContext();
+
+  const [isDocumentationVisible, setDocumentationVisible] = useState(false);
+  // const [isHeadersVisible, setHeadersVisible] = useState(true);
+  // const [isVariablesVisible, setVariablesVisible] = useState(true);
+
+  const toggleDocumentationVisibility = () => {
+    setDocumentationVisible(!isDocumentationVisible);
+  };
+
+  // const toggleHeadersVisibility = () => {
+  //   setHeadersVisible(!isHeadersVisible);
+  // };
+
+  // const toggleVariablesVisibility = () => {
+  //   setVariablesVisible(!isVariablesVisible);
+  // };
 
   const handleEndpointChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEndpoint(event.target.value);
@@ -55,33 +72,28 @@ const GraphQL: React.FC = () => {
     }
   };
 
-  interface ParsedQuery {
-    formatted: string;
-    error?: string;
-  }
-
-  const parseQuery = (query: string): ParsedQuery => {
-    try {
-      const lines = query.split("\n").map((line) => line.trim());
-      const formatted = lines.join(" ").replace(/\s+/g, " ");
-      return { formatted };
-    } catch (error) {
-      return { formatted: query, error: "Error parsing query" };
-    }
-  };
 
   const prettifyQuery = () => {
-    const { formatted, error } = parseQuery(query);
-    if (error) {
-      console.error(error);
-    } else {
-      setQuery(formatted);
+    try {
+      const parsedQuery = parse(query, { noLocation: true });
+      const prettifiedQuery = print(parsedQuery);
+      setQuery(prettifiedQuery);
+    } catch (error) {
+      console.error("Error parsing or formatting GraphQL query:", error);
     }
   };
 
   return (
     <div className="GraphQL">
-      <form onSubmit={handleSubmit}>
+      <div className="documentation">
+      {Localization === "en" ? (
+            <button onClick={toggleDocumentationVisibility}> Documentation</button>
+          ) : (
+            <button onClick={toggleDocumentationVisibility}> Документация</button>
+          )}
+        {isDocumentationVisible && <DocumentationExplorer sdlEndpoint={endpoint} />}
+      </div>
+      <form className="form-container" onSubmit={handleSubmit}>
         <div className="control">
           {Localization === "en" ? (
             <label htmlFor="endpoint">Endpoint</label>
@@ -120,6 +132,11 @@ const GraphQL: React.FC = () => {
           ) : (
             <label htmlFor="variables">Переменные</label>
           )}
+          {/* {Localization === "en" ? (
+            <button onClick={toggleVariablesVisibility}>Variables</button>
+          ) : (
+            <button onClick={toggleVariablesVisibility}>Переменные</button>
+          )}   */}
           <textarea
             id="variables"
             rows={5}
@@ -133,6 +150,11 @@ const GraphQL: React.FC = () => {
           ) : (
             <label htmlFor="headers">Заголовки</label>
           )}
+          {/* {Localization === "en" ? (
+            <button onClick={toggleHeadersVisibility}>Headers</button>
+          ) : (
+            <button onClick={toggleHeadersVisibility}>Заголовки</button>
+          )} */}
           <textarea
             id="headers"
             rows={5}
@@ -148,7 +170,11 @@ const GraphQL: React.FC = () => {
       </form>
       <div className="response">
         {Localization === "en" ? <label>Response</label> : <label>Ответ</label>}
-        <ResponseJSON data={response} />
+        {response && 
+        <pre>
+        {JSON.stringify(response, null, 2)}
+        </pre>
+        }
       </div>
     </div>
   );
