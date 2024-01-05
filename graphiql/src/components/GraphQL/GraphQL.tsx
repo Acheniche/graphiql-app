@@ -125,9 +125,13 @@ const GraphQL: React.FC = () => {
             onChange={handleQueryChange}
           />
           {Localization === "en" ? (
-            <button type="button" onClick={prettifyQuery}>Format Query</button>
+            <button type="button" onClick={prettifyQuery}>
+              Format Query
+            </button>
           ) : (
-            <button type="button" onClick={prettifyQuery}>Форматировать запрос</button>
+            <button type="button" onClick={prettifyQuery}>
+              Форматировать запрос
+            </button>
           )}
         </div>
         <div className="control">
@@ -137,18 +141,22 @@ const GraphQL: React.FC = () => {
             <label htmlFor="variables">Переменные</label>
           )}
           {Localization === "en" ? (
-            <button type="button" onClick={toggleVariablesVisibility}>Variables</button>
+            <button type="button" onClick={toggleVariablesVisibility}>
+              Variables
+            </button>
           ) : (
-            <button type="button" onClick={toggleVariablesVisibility}>Переменные</button>
-          )} 
-{isVariablesVisible &&
-          <textarea
-            id="variables"
-            rows={5}
-            cols={50}
-            onChange={handleVariablesChange}
-          />
-}
+            <button type="button" onClick={toggleVariablesVisibility}>
+              Переменные
+            </button>
+          )}
+          {isVariablesVisible && (
+            <textarea
+              id="variables"
+              rows={5}
+              cols={50}
+              onChange={handleVariablesChange}
+            />
+          )}
         </div>
         <div className="control">
           {Localization === "en" ? (
@@ -157,18 +165,22 @@ const GraphQL: React.FC = () => {
             <label htmlFor="headers">Заголовки</label>
           )}
           {Localization === "en" ? (
-            <button type="button" onClick={toggleHeadersVisibility}>Headers</button>
+            <button type="button" onClick={toggleHeadersVisibility}>
+              Headers
+            </button>
           ) : (
-            <button type="button" onClick={toggleHeadersVisibility}>Заголовки</button>
+            <button type="button" onClick={toggleHeadersVisibility}>
+              Заголовки
+            </button>
           )}
-          {isHeadersVisible && 
-          <textarea
-            id="headers"
-            rows={5}
-            cols={50}
-            onChange={handleHeadersChange}
-          />
-        }
+          {isHeadersVisible && (
+            <textarea
+              id="headers"
+              rows={5}
+              cols={50}
+              onChange={handleHeadersChange}
+            />
+          )}
         </div>
         {Localization === "en" ? (
           <button type="submit">Send</button>
