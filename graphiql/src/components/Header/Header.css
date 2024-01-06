@@ -1,0 +1,21 @@
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    transition: background-color 0.3s;
+  }
+
+header button {
+    margin: 0 20px;
+}  
+  
+  .App.sticky {
+    background-color: #555;
+    position: sticky;
+    top: 0;
+  }
+
+  body {
+    margin: 0;
+  }
